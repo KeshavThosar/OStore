@@ -10,11 +10,11 @@ To create an object storage service where user can upload files via an API/UI
 
 ## Tech Stack (Initial):  
 - Backend: Python, Flask, SQLite  
-- Frontend: JQuery  
+- Frontend: Javascript  
 - Infrastructure (Later): Docker  
 
 ## Todo
-[ ] Create a model for object to store metadata : TD_sql_model
+[x] Create a model for object to store metadata : TD_sql_model
 [ ] Create a simple file upload api using Flask : TD_upload_api
 [ ] Keep behind an auth token: TD_auth_api
 [ ] Implement a File Finder for retrieving from multiple storage locations : TD_file_finder (Later)
