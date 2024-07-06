@@ -10,7 +10,7 @@ To create an object storage service where user can upload files via an API/UI
 ## Tech Stack (Initial):  
 - Backend: Python, Flask, SQLite  
 - Frontend: Javascript  
-- Infrastructure (Later): Docker  
+- Infrastructure: Docker  
 
 ## Todo
 [x] Create a model for object to store metadata : TD_sql_model
@@ -18,4 +18,5 @@ To create an object storage service where user can upload files via an API/UI
 [ ] Keep behind an auth token: TD_auth_api
 [ ] Dockerize the software : TD_docker
 [ ] Create Demo Video
+[ ] Update README
 
