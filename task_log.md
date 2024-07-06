@@ -18,5 +18,13 @@ Start Date: 5 July, 2024
 End Date:
 
 ### Considerations
+Needs to be integrated with database
+Once implemented, this needs to be hooked with the authentication
 
+### Endpoints
+/storage/add -> filename, file
+/storage/get -> id
+/storage/list
+/storage/replace
+/storage/remove
 
