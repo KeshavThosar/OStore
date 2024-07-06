@@ -2,8 +2,9 @@
 API definitions for the storage api
 Currently supported endpoints:
 /storage/add - upload a file
-/storage/get - download a file by using the file identifier
+/storage/download - download a file by using the file identifier
 /storage/list - list all the files in the store
+/storage/get -  download information for a file by using the file identifier
 /storage/replace - update a specific file uploaded by the same user
 /storage/remove - remove a file from the store
 '''
@@ -13,7 +14,7 @@ import hashlib
 import uuid
 
 from .handler import EndpointHandler
-from flask import request, jsonify
+from flask import request, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from database.models import User, StoreObject
@@ -23,13 +24,15 @@ class Storage(EndpointHandler):
 		super().__init__({
 			'add': self.add_item,
 			'list': self.list_items,
+			'get': self.get_item,
+			'download': self.download_item,
 			'replace': self.replace_item,
 			'remove': self.remove_item
 		})
 
 		self.db: SQLAlchemy = db
 		dir_path = os.path.dirname(os.path.realpath(__file__))
-		self.storage = os.path.join(dir_path, '..', 'storage')
+		self.storage = os.path.join(dir_path, '..', 'storage') # storage location
 
 
 	def add_item(self):
@@ -88,10 +91,83 @@ class Storage(EndpointHandler):
 		
 		return jsonify(list(files)), 200
 
-	def replace_item(self):
-		return 'OK'
+	def check_for_file(self, identifier):
+		db_session = self.db.session
+		file_fetch = db_session.execute(
+			self.db.select(StoreObject).filter_by(file_identifier=identifier)
+			).scalar_one_or_none()
+		return file_fetch
 
+	def get_item(self):
+		file_identifier = request.args.get('id')
+		file_fetch = self.check_for_file(file_identifier)
+		response = {}
+		if file_fetch is None:
+			response['message'] = 'no file exists for the provided id'
+			return jsonify(response), 404
+		
+		return jsonify({
+			'message': 'file information retrieved successfully',
+			'name': file_fetch.file_name, 
+			'identifier': file_fetch.file_identifier, 
+			'hash': file_fetch.file_hash,
+			'created_on': file_fetch.creation_datetime
+		}), 200
+
+	def replace_item(self):
+		response = {}
+		identifier = request.args.get('id', None)
+		if request.method == 'PUT':
+			pass
+
+			if identifier is None:
+				response['message'] = 'file identifier (id) not provided or is invalid'
+				return jsonify(response), 406 # Unacceptable
+			
+			file_fetch()
+
+		
+
+		return jsonify(response), 200
+	
+	def download_item(self):
+		identifier = request.args.get('id', None)
+		response = {}
+		if identifier is None:
+			response['message'] = 'file identifier (id) not provided or is invalid'
+			return jsonify(response), 406 # Unacceptable
+		
+		file_fetch = self.check_for_file(identifier)
+		if file_fetch is None:
+			response['message'] = 'no file exists for the provided id'
+			return jsonify(response), 404
+		
+		file_to_send = os.path.join(self.storage, file_fetch.file_identifier)
+		return send_file(file_to_send, download_name=file_fetch.file_name), 200
+		
 	def remove_item(self):
-		return 'OK'
+		response = {}
+		if request.method == 'DELETE':
+			identifier = request.args.get('id', None)
+			if identifier is None:
+				response['message'] = 'file identifier (id) not provided or is invalid'
+				return jsonify(response), 406 # Unacceptable
+			
+			file_fetch = self.check_for_file(identifier)
+			if file_fetch is None:
+				response['message'] = 'no file exists for the provided id'
+				return jsonify(response), 404
+			
+			db_session = self.db.session
+			db_session.delete(file_fetch)
+			db_session.commit()
+
+			response['message'] = 'file was deleted successfully'
+
+		else:
+			response['message'] = 'file can be removed only using DELETE request'
+			return jsonify(response), 405
+				
+		return jsonify(response), 200
 
    
