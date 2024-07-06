@@ -1,3 +1,7 @@
+'''
+Model classes for database
+'''
+
 from datetime import datetime, timezone
 
 from flask_sqlalchemy import SQLAlchemy

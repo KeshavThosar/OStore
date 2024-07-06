@@ -18,6 +18,4 @@ app.add_url_rule('/storage/<endpoint>', 'storage', storage.handle_endpoint, meth
 
 if __name__ == '__main__':
   app.run(port=5000, debug=True)
-
-
-
+  
