@@ -41,7 +41,7 @@ Access Token is passed as Bearer Token in any storage requests
 
 ### Endpoints
 /auth/register -> email, password
-/auth/login -> email, password : access_token, refresh_token
+/auth/login -> email, password : access_token
 
 ### Utilities
 is_token_valid(token) : checks if token is valid or expired
