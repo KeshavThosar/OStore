@@ -76,5 +76,14 @@ class Auth(EndpointHandler):
       'access_token': access_token,
       'expires_in': expiration_time.seconds,
     }), 200
+  
+  def is_token_valid(self, access_token):
+    try:
+      payload = decode_token(access_token)
+      print(payload)
+      return True
+    except Exception as e:
+      print(e)
 
+    return False
 
