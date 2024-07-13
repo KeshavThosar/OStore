@@ -19,9 +19,10 @@ from flask import request, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from database.models import User, StoreObject
+from .auth import Auth
 
 class Storage(EndpointHandler):
-	def __init__(self, db: SQLAlchemy):
+	def __init__(self, auth: Auth, db: SQLAlchemy):
 		super().__init__({
 			'add': self.add_item,
 			'list': self.list_items,
@@ -31,13 +32,17 @@ class Storage(EndpointHandler):
 			'remove': self.remove_item
 		})
 
+		self.auth = auth
 		self.db: SQLAlchemy = db
 		dir_path = os.path.dirname(os.path.realpath(__file__))
 		self.storage = os.path.join(dir_path, '..', 'storage') # storage location
 
-
 	def add_item(self):
 		response = {}
+		access_token = self.auth.validate_access_token()
+		if access_token is None: 
+			return jsonify({'message': 'Access Denied'}), 401
+		
 		if request.method == 'POST':
 			file_identifier = str(uuid.uuid4())
 			file_path = os.path.join(self.storage, file_identifier)
@@ -92,6 +97,10 @@ class Storage(EndpointHandler):
 		return jsonify(response), 201 # Created
 
 	def list_items(self):
+		access_token = self.auth.validate_access_token()
+		if access_token is None: 
+			return jsonify({'message': 'Access Denied'}), 401
+		
 		db_session = self.db.session
 		storeObjects = db_session.execute(self.db.select(StoreObject)).scalars().all()
 		files = map(lambda x: {
@@ -124,6 +133,10 @@ class Storage(EndpointHandler):
 		return size
 
 	def get_item(self):
+		access_token = self.auth.validate_access_token()
+		if access_token is None: 
+			return jsonify({'message': 'Access Denied'}), 401
+		
 		file_identifier = request.args.get('id')
 		file_fetch = self.check_for_file(file_identifier)
 		response = {}
@@ -141,6 +154,10 @@ class Storage(EndpointHandler):
 
 	def replace_item(self):
 		response = {}
+		access_token = self.auth.validate_access_token()
+		if access_token is None: 
+			return jsonify({'message': 'Access Denied'}), 401
+		
 		identifier = request.args.get('id', None)
 		db_session = self.db.session
 		
@@ -181,6 +198,10 @@ class Storage(EndpointHandler):
 		return jsonify(response), 201
 	
 	def download_item(self):
+		access_token = self.auth.validate_access_token()
+		if access_token is None: 
+			return jsonify({'message': 'Access Denied'}), 401
+		
 		identifier = request.args.get('id', None)
 		response = {}
 		if identifier is None:
@@ -197,6 +218,10 @@ class Storage(EndpointHandler):
 		
 	def remove_item(self):
 		response = {}
+		access_token = self.auth.validate_access_token()
+		if access_token is None: 
+			return jsonify({'message': 'Access Denied'}), 401
+		
 		if request.method == 'DELETE':
 			identifier = request.args.get('id', None)
 			if identifier is None:
