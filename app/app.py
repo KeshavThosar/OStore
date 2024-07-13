@@ -22,7 +22,7 @@ jwt = JWTManager(app)
 auth = Auth(jwt, db)
 app.add_url_rule('/auth/<endpoint>', 'auth', auth.handle_endpoint, methods=['POST'])
 
-storage = Storage(db) # Add auth as constructor
+storage = Storage(auth, db)
 app.add_url_rule('/storage/<endpoint>', 'storage', storage.handle_endpoint, methods=['GET', 'POST', 'PUT', 'DELETE'])
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
