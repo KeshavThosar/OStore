@@ -31,7 +31,7 @@ Once implemented, this needs to be hooked with the authentication
 ## TD_auth_api
 Objective: To create an authentication system for preventing unautorised access to storage api
 Start Date: 13 July, 2024
-End Date: 
+End Date: 14 July, 2024
 
 ### Considerations
 Needs to be integrated with database
@@ -46,6 +46,9 @@ Access Token is passed as Bearer Token in any storage requests
 ### Utilities
 is_token_valid(token) : checks if token is valid or expired
 
-
+## TD_frontend
+Objective: To develop a very simple UI to display the functionality of the service
+Start Date: 14 July, 2024
+End Date:
 
 
