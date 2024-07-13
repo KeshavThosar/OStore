@@ -80,10 +80,18 @@ class Auth(EndpointHandler):
   def is_token_valid(self, access_token):
     try:
       payload = decode_token(access_token)
-      print(payload)
       return True
     except Exception as e:
       print(e)
 
     return False
+  
+  def validate_access_token(self):
+    auth_header = request.headers.get('Authorization', '')
+    access_token = auth_header.replace('Bearer ', '')
+
+    if self.is_token_valid(access_token) is True: 
+      return access_token
+    return None
+
 
