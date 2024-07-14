@@ -46,7 +46,7 @@ Access Token is passed as Bearer Token in any storage requests
 ### Utilities
 is_token_valid(token) : checks if token is valid or expired  
 
-## TD_frontend <Cancelled>
+## TD_frontend [Cancelled]
 Objective: To develop a very simple UI to display the functionality of the service  
 Start Date: 14 July, 2024   
 End Date:  
