@@ -20,6 +20,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from database.models import User, StoreObject
 from .auth import Auth
+from flask_jwt_extended import decode_token
 
 class Storage(EndpointHandler):
 	def __init__(self, auth: Auth, db: SQLAlchemy):
@@ -42,6 +43,8 @@ class Storage(EndpointHandler):
 		access_token = self.auth.validate_access_token()
 		if access_token is None: 
 			return jsonify({'message': 'Access Denied'}), 401
+		
+		user_id = decode_token(access_token).get('sub')
 		
 		if request.method == 'POST':
 			file_identifier = str(uuid.uuid4())
@@ -83,7 +86,7 @@ class Storage(EndpointHandler):
 				file_name = fname,
 				file_hash = file_hash,
 				file_identifier = file_identifier,
-				user_id = 1 # for testing
+				user_id = user_id
 			)
 
 			db_session.add(storeObject)
@@ -100,7 +103,7 @@ class Storage(EndpointHandler):
 		access_token = self.auth.validate_access_token()
 		if access_token is None: 
 			return jsonify({'message': 'Access Denied'}), 401
-		
+		print(decode_token(access_token))
 		db_session = self.db.session
 		storeObjects = db_session.execute(self.db.select(StoreObject)).scalars().all()
 		files = map(lambda x: {
@@ -206,7 +209,7 @@ class Storage(EndpointHandler):
 		response = {}
 		if identifier is None:
 			response['message'] = 'file identifier (id) not provided or is invalid'
-			return jsonify(response), 406 # Unacceptable
+			return jsonify(response), 406
 		
 		file_fetch = self.check_for_file(identifier)
 		if file_fetch is None:
@@ -226,7 +229,7 @@ class Storage(EndpointHandler):
 			identifier = request.args.get('id', None)
 			if identifier is None:
 				response['message'] = 'file identifier (id) not provided or is invalid'
-				return jsonify(response), 406 # Unacceptable
+				return jsonify(response), 406
 			
 			file_fetch = self.check_for_file(identifier)
 			if file_fetch is None:

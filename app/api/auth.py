@@ -38,7 +38,7 @@ class Auth(EndpointHandler):
     email = request.form['email']
     password = request.form['password']
     password_hash = self.get_hash(password)
-    # Add validation
+    # Add validation [Later]
 
     user = self.get_user(email)
     if user is not None:
