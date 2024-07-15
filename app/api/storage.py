@@ -103,7 +103,7 @@ class Storage(EndpointHandler):
 		access_token = self.auth.validate_access_token()
 		if access_token is None: 
 			return jsonify({'message': 'Access Denied'}), 401
-		print(decode_token(access_token))
+		
 		db_session = self.db.session
 		storeObjects = db_session.execute(self.db.select(StoreObject)).scalars().all()
 		files = map(lambda x: {
