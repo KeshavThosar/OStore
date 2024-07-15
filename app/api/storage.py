@@ -236,12 +236,13 @@ class Storage(EndpointHandler):
 				response['message'] = 'no file exists for the provided id'
 				return jsonify(response), 404
 			
-			db_session = self.db.session
-			db_session.delete(file_fetch)
-			db_session.commit()
-
-			response['message'] = 'file was deleted successfully'
-
+			if decode_token(access_token).get('sub') == file_fetch.user_id:
+				db_session = self.db.session
+				db_session.delete(file_fetch)
+				db_session.commit()
+				response['message'] = 'file was deleted successfully'
+			else:
+				return jsonify({'message': 'File can only be removed by the uploader'}), 401
 		else:
 			response['message'] = 'file can be removed only using DELETE request'
 			return jsonify(response), 405
