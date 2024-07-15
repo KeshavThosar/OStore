@@ -3,7 +3,7 @@ The main file that runs the server for flask
 '''
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 from flask_jwt_extended import JWTManager
 from database import setup_db
 from api.storage import Storage
@@ -24,6 +24,10 @@ app.add_url_rule('/auth/<endpoint>', 'auth', auth.handle_endpoint, methods=['POS
 
 storage = Storage(auth, db)
 app.add_url_rule('/storage/<endpoint>', 'storage', storage.handle_endpoint, methods=['GET', 'POST', 'PUT', 'DELETE'])
+
+@app.route('/')
+def home():
+  return render_template('index.html')
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY'] 
