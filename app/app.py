@@ -27,7 +27,8 @@ app.add_url_rule('/storage/<endpoint>', 'storage', storage.handle_endpoint, meth
 
 @app.route('/')
 def home():
-  return render_template('index.html')
+  test_access_token = os.environ['long_exp_access_tok'] #For testing
+  return render_template('index.html', test_token=test_access_token)
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY'] 
