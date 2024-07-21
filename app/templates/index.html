@@ -59,38 +59,37 @@
     </div>
   </div>
 
-  <div class="container mt-2">
-    <div id="files-dashboard" class="container d-none">
-      <div class="container mt-5">
-        <div class="row justify-content-center">
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="text-center">Upload File</h3>
-              </div>
-              <div class="card-body">
-                <form id="uploadForm">
-                  <div class="mb-3">
-                    <label for="fileInput" class="form-label">Choose a file to upload</label>
-                    <input type="file" class="form-control" id="fileInput" accept=".txt,.pdf,.doc,.docx">
-                  </div>
-                  <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">Upload</button>
-                  </div>
-                </form>
+  <div class="d-none" id="files-dashboard">
+    <div class="container mt-2">
+      <div class="container">
+        <div class="container mt-5">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="text-center">Upload File</h3>
+                </div>
+                <div class="card-body">
+                  <form id="uploadForm">
+                    <div class="mb-3">
+                      <label for="fileInput" class="form-label">Choose a file to upload</label>
+                      <input type="file" class="form-control" id="fileInput" accept=".txt,.pdf,.doc,.docx">
+                    </div>
+                    <div class="d-grid">
+                      <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      </form>
     </div>
+    <hr>
+    <h3 class="text-center mb-3">Uploaded Files</h3>
+    <div id="list-files" class="container"></div>
   </div>
-  <hr>
-  <h3 class="text-center mb-3">Uploaded Files</h3>
-  <div id="list-files" class="container"></div>
-  </div>
-
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 
