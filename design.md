@@ -17,7 +17,7 @@ To create an object storage service where user can upload files via an API/UI
 - [x] Create a simple file upload api using Flask and test : TD_upload_api  
 - [x] Keep behind an auth token: TD_auth_api  
 - [x] Create a basic frontend: TD_frontend 
-- [ ] Test Run end to end and linting: TD_testing  
+- [x] Test Run end to end: TD_testing  
 - [ ] Dockerize the software : TD_docker  
 - [ ] Create Demo Video  
 - [ ] Update README  
