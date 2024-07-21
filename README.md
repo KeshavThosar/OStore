@@ -46,6 +46,8 @@ You can access a testing frontend on `http://localhost:5000`
 | **/storage/remove** | DELETE | id | remove a file from the store |
 
 **Remember: To use the service, you need to first login using the auth api and pass the access_token as the Bearer token in the Authorization header for each request**
+
+*Try importing the OStore Postman Collection to test the endpoints on your system*
  
  
 
