@@ -5,8 +5,6 @@ const gbid = (x) => document.getElementById(x)
 let accessTokenInput = gbid('access-token')
 let AUTH_HEADER = 'Bearer ' + accessTokenInput.value
 const LIST_FILES_EVENT = new Event('list-files')
-const USER_LOGIN_EVENT = new Event('user-login')
-const USER_LOGOUT_EVENT = new Event('user-logout')
 
 const listFilesDiv = gbid('list-files')
 const alertMessageDiv = gbid('alert-message-container')
