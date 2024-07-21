@@ -47,8 +47,10 @@
                     <button type="submit" class="btn btn-primary">Login</button>
                   </div>
                 </form>
-                <p class="text-center mt-2" id="alt-register-message">New here? <a class="link" href="#" onclick="show('register')">Register</a></p>
-                <p class="text-center mt-2 d-none" id="alt-login-message">Already a user? <a class="link" href="#" onclick="show('login')">Login</a></p>
+                <p class="text-center mt-2" id="alt-register-message">New here? <a class="link" href="#"
+                    onclick="show('register')">Register</a></p>
+                <p class="text-center mt-2 d-none" id="alt-login-message">Already a user? <a class="link" href="#"
+                    onclick="show('login')">Login</a></p>
               </div>
             </div>
           </div>
@@ -57,18 +59,36 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container mt-2">
     <div id="files-dashboard" class="container d-none">
-      <div id="uploader">
-        <h3>Upload your file here</h3>
-        <div class="mb-3">
-          <input class="form-control form-control-sm" id="formFileSm" type="file">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="text-center">Upload File</h3>
+              </div>
+              <div class="card-body">
+                <form id="uploadForm">
+                  <div class="mb-3">
+                    <label for="fileInput" class="form-label">Choose a file to upload</label>
+                    <input type="file" class="form-control" id="fileInput" accept=".txt,.pdf,.doc,.docx">
+                  </div>
+                  <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <hr>
-      <h3>Files Uploaded</h3>
-      <div id="list-files"></div>
+      </form>
     </div>
+  </div>
+  <hr>
+  <h3 class="text-center mb-3">Uploaded Files</h3>
+  <div id="list-files" class="container"></div>
   </div>
 
   <script src="{{ url_for('static', filename='app.js') }}"></script>
