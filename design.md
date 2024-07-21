@@ -18,7 +18,8 @@ To create an object storage service where user can upload files via an API/UI
 - [x] Keep behind an auth token: TD_auth_api  
 - [x] Create a basic frontend: TD_frontend 
 - [x] Test Run end to end: TD_testing  
-- [ ] Dockerize the software : TD_docker  
+- [ ] Dockerize the software : TD_docker 
+- [ ] Update README   
 - [ ] Create Demo Video  
-- [ ] Update README  
+
 
