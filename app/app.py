@@ -28,6 +28,7 @@ app.add_url_rule('/storage/<endpoint>', 'storage', storage.handle_endpoint, meth
 @app.route('/')
 def home():
   test_access_token = os.environ['long_exp_access_tok'] #For testing
+  test_access_token = ''
   return render_template('index.html', test_token=test_access_token)
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
