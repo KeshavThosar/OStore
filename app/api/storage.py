@@ -240,6 +240,11 @@ class Storage(EndpointHandler):
 				db_session = self.db.session
 				db_session.delete(file_fetch)
 				db_session.commit()
+
+				if identifier == file_fetch.file_identifier:
+					file_true_path = os.path.join(self.storage, identifier)
+					os.remove(file_true_path)
+					
 				response['message'] = 'file was deleted successfully'
 			else:
 				return jsonify({'message': 'File can only be removed by the uploader'}), 401
