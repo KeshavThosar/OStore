@@ -49,7 +49,7 @@ is_token_valid(token) : checks if token is valid or expired
 ## TD_frontend
 Objective: To develop a very simple UI to display the functionality of the service  
 Start Date: 14 July, 2024   
-End Date:  
+End Date: 21 July, 2024  
 
 ### Considerations
 Basic Login and Register Page  
