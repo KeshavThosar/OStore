@@ -63,7 +63,7 @@ class Auth(EndpointHandler):
 
     user = self.get_user(email)
     if user is None or user.password_hash != password_hash:
-      return jsonify({'message': 'invalid email or password'})
+      return jsonify({'message': 'invalid email or password'}), 401
     
     expiration_time = timedelta(minutes=15) 
     access_token = create_access_token(
@@ -79,7 +79,7 @@ class Auth(EndpointHandler):
   
   def is_token_valid(self, access_token):
     try:
-      payload = decode_token(access_token)
+      decode_token(access_token)
       return True
     except Exception as e:
       print(e)
