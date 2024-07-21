@@ -36,5 +36,5 @@ app.config['JWT_SECRET_KEY'] = os.environ['JWT_SECRET_KEY']
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 
 if __name__ == '__main__':
-  app.run(port=5000, debug=True)
+  app.run(port=os.environ['PORT'], debug=True)
   
