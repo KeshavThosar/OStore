@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,9 +13,11 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
 </head>
+
 <body>
 
-  <div id="alert-message-container" class="d-none position-absolute mt-5 top-0 start-50 translate-middle-x alert alert-warning" role="alert">
+  <div id="alert-message-container"
+    class="d-none position-absolute mt-5 top-0 start-50 translate-middle-x alert alert-warning" role="alert">
     <div id="alert-message-text">Alert appears here</div>
   </div>
 
@@ -23,15 +26,39 @@
   <p class="text-center">An Open-source Object Storage Solution</p>
   <div id="user-auth">
     <div id="login-page">
-
-    </div>
-    <div id="register-page">
-
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="text-center" id="login-form-heading" data-role="login">Login</h3>
+              </div>
+              <div class="card-body">
+                <form method="post" id="login-form">
+                  <div class="mb-3">
+                    <label for="username" class="form-label">Email Address</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter your username">
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                  </div>
+                  <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                  </div>
+                </form>
+                <p class="text-center mt-2" id="alt-register-message">New here? <a class="link" href="#" onclick="show('register')">Register</a></p>
+                <p class="text-center mt-2 d-none" id="alt-login-message">Already a user? <a class="link" href="#" onclick="show('login')">Login</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="container">
-    <div id="files-dashboard" class="container">
+    <div id="files-dashboard" class="container d-none">
       <div id="uploader">
         <h3>Upload your file here</h3>
         <div class="mb-3">
@@ -43,7 +70,8 @@
       <div id="list-files"></div>
     </div>
   </div>
-  
+
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
+
 </html>

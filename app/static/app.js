@@ -2,8 +2,8 @@ const qs = (x) => document.querySelector(x)
 const qsa = (x) => document.querySelector(x)
 const gbid = (x) => document.getElementById(x)
 
-let ACCESS_TOKEN = gbid('access-token').value
-let AUTH_HEADER = 'Bearer ' + ACCESS_TOKEN
+let accessTokenInput = gbid('access-token')
+let AUTH_HEADER = 'Bearer ' + accessTokenInput.value
 const LIST_FILES_EVENT = new Event('list-files')
 const USER_LOGIN_EVENT = new Event('user-login')
 const USER_LOGOUT_EVENT = new Event('user-logout')
@@ -11,6 +11,10 @@ const USER_LOGOUT_EVENT = new Event('user-logout')
 const listFilesDiv = gbid('list-files')
 const alertMessageDiv = gbid('alert-message-container')
 const alertMessageText = gbid('alert-message-text')
+
+const loginFormHeading = gbid('login-form-heading')
+const loginUsernameInput = gbid('username')
+const loginPasswordInput = gbid('password')
 
 window.onload = async () => {
   await init()
@@ -20,26 +24,78 @@ window.onload = async () => {
 document.addEventListener('list-files', list_files)
 
 async function init() {
+  const ACCESS_TOKEN = accessTokenInput.value
+  if(ACCESS_TOKEN.length == 0){
+    try {
+      await list_files()
+    } catch (error) {
+      
+    }
+  }else{
+    hide_login_form()
+  }
   console.log('Access Token: ', ACCESS_TOKEN)
   document.dispatchEvent(LIST_FILES_EVENT)
 }
 
-async function login(email, password){
+gbid('login-form').addEventListener('submit', process_form)
+async function process_form(event){
+  event.preventDefault()
+  let loginFormRole = loginFormHeading.dataset['role']
+  let username = loginUsernameInput.value
+  let password = loginPasswordInput.value
 
+  if(loginFormRole == 'login'){
+    await login(username, password)
+  }else if(loginFormRole == 'register'){
+    await register(username, password)
+  }
+
+}
+
+async function login(email, password){
+  let req = await fetch('/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `email=${email}&password=${password}`
+  })  
+  let body = await req.json()
+  if(req.status != 200){
+    popup('Invalid username/password')
+  }else{
+    accessTokenInput.value = body['access_token']
+    AUTH_HEADER = 'Bearer ' + accessTokenInput.value
+    hide_login_form()
+    dispatch_list_files()
+  }
 }
 
 async function register(email, password) {
-
+  let req = await fetch('/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `email=${email}&password=${password}`
+  }) 
+  
+  if(req.status == 409){
+    popup('User already exists. Try Log In?')
+  }else{
+    await login(email, password)
+  }
 }
 
 async function list_files(){
-  let res = await fetch('/storage/list', {
+  let req = await fetch('/storage/list', {
     headers: {
       authorization: AUTH_HEADER
     }
   })
   
-  let items = await res.json()
+  let items = await req.json()
   console.log(items)
   let content = `
   <table class="table table-bordered">
@@ -129,4 +185,23 @@ function popup(message){
   setTimeout(() => alertMessageDiv.classList.add('d-none'), 2000)
 }
 
+function hide_login_form(){
+  // Hides login form, shows dashboard
+  gbid('user-auth').classList.add('d-none')
+  gbid('files-dashboard').classList.remove('d-none')
+}
 
+function show(type){
+  if(type == 'login'){
+    gbid('alt-login-message').classList.add('d-none')
+    gbid('alt-register-message').classList.remove('d-none')
+    loginFormHeading.innerText = 'Login'
+    loginFormHeading.dataset['role'] = 'login'
+  }else if(type == 'register'){
+    gbid('alt-login-message').classList.remove('d-none')
+    gbid('alt-register-message').classList.add('d-none')
+    loginFormHeading.innerText = 'Register'
+    loginFormHeading.dataset['role'] = 'register'
+
+  }
+}
